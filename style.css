@@ -10,25 +10,21 @@ body {
     font-size: 1.2rem;
     margin: 0;
     padding: 20px;
+    overflow-y: auto;
     overflow-x: hidden;
-    -webkit-font-smoothing: none;
+    min-height: 100vh;
 }
 
-/* Efecto de línea de escaneo vieja */
 .scanline {
-    width: 100%; height: 2px;
-    background: rgba(255, 255, 255, 0.05);
+    width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 50%, rgba(255,255,255,0.03) 50%);
+    background-size: 100% 4px;
     position: fixed; top: 0; left: 0;
-    z-index: 10; pointer-events: none;
-    animation: scan 4s linear infinite;
+    z-index: -1; /* Enviado al fondo */
+    pointer-events: none;
 }
 
-@keyframes scan {
-    0% { top: 0; }
-    100% { top: 100%; }
-}
-
-#output div { margin-bottom: 8px; white-space: pre-wrap; line-height: 1.4; }
+#output div { margin-bottom: 8px; white-space: pre-wrap; word-wrap: break-word; }
 .yellow { color: #ffff00; }
 .green { color: #00ff00; }
 .red { color: #ff0000; text-shadow: 0 0 8px #ff0000; }
@@ -42,7 +38,6 @@ body {
     outline: none; flex-grow: 1;
 }
 
-/* Animación de parpadeo de error */
 .glitch { animation: glitch-anim 0.2s infinite; }
 @keyframes glitch-anim {
     0% { transform: translate(0); }
