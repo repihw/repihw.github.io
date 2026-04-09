@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEMA REPIHW - TERMINAL 1.2.2</title>
+    <title>REPIHW_SYSTEM_v1.2.2</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="scanline"></div>
     <div id="terminal">
         <div id="output"></div>
-        <div id="input-line">
+        <div id="input-line" style="display: none;">
             <span class="prompt">$ :</span>
-            <input type="text" id="command-input" autofocus>
+            <input type="text" id="command-input" autofocus autocomplete="off" spellcheck="false">
         </div>
     </div>
     <script src="script.js"></script>
