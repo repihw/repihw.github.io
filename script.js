@@ -12,7 +12,7 @@ let cmdHistory = [];
 function typeText(target, text, className, callback) {
     let i = 0;
     const div = document.createElement('div');
-    if (className) div.classList.add(className);
+    if (className) div.className = className;
     target.appendChild(div);
 
     const interval = setInterval(() => {
@@ -26,21 +26,23 @@ function typeText(target, text, className, callback) {
     }, 25);
 }
 
-// Secuencia de Boot estilo la captura que pasaste
 function boot() {
-    typeText(output, "Loading files...", "white", () => {
-        setTimeout(() => {
-            typeText(output, "CRITICAL: Some files are missing!", "yellow", () => {
-                setTimeout(() => {
-                    typeText(output, "Proceed with recovery? [Y/N]", "yellow", () => {
-                        inputLine.style.display = "flex";
-                        input.focus();
-                        waitingForChoice = true;
-                    });
-                }, 500);
-            });
-        }, 800);
-    });
+    // Pequeño delay inicial para que no se sienta instantáneo
+    setTimeout(() => {
+        typeText(output, "Loading files...", "white", () => {
+            setTimeout(() => {
+                typeText(output, "CRITICAL: Some files are missing!", "yellow", () => {
+                    setTimeout(() => {
+                        typeText(output, "Proceed with recovery? [Y/N]", "yellow", () => {
+                            inputLine.style.display = "flex";
+                            input.focus();
+                            waitingForChoice = true;
+                        });
+                    }, 500);
+                });
+            }, 800);
+        });
+    }, 500);
 }
 
 input.addEventListener('keydown', async (e) => {
@@ -51,39 +53,11 @@ input.addEventListener('keydown', async (e) => {
 
         if (fullCommand !== "") cmdHistory.push(fullCommand);
 
-        // 1. LÓGICA DE LA ENCUESTA (DO_NOT_EXECUTE)
-        if (isSurveyActive) {
-            const echo = document.createElement('div');
-            echo.innerText = `$ : ${fullCommand}`;
-            output.appendChild(echo);
+        const echo = document.createElement('div');
+        echo.innerText = `$ : ${fullCommand}`;
+        output.appendChild(echo);
 
-            if (surveyStep === 1) {
-                if (cmd === 'y') {
-                    surveyStep = 2;
-                    typeText(output, `\nCorrect. Metadata matches.\nNext: Are you alone in the room right now? [Y/N]`, "white");
-                } else {
-                    isSurveyActive = false;
-                    typeText(output, `\nYOU ARE LYING TO ME!`, "red glitch", () => {
-                        setTimeout(() => {
-                            typeText(output, `I can see your reflection, ${userCountry} citizen.\nDon't look back.`, "red");
-                        }, 1000);
-                    });
-                }
-            } else if (surveyStep === 2) {
-                typeText(output, `\nIt doesn't matter what you say.\nI can hear your breathing through the microphone.\n\nCONNECTION PERMANENTLY LOGGED.`, "red", () => {
-                    setTimeout(() => { document.body.innerHTML = ""; }, 3000);
-                });
-                isSurveyActive = false;
-            }
-            return;
-        }
-
-        // 2. LÓGICA DE BOOT
         if (waitingForChoice) {
-            const echo = document.createElement('div');
-            echo.innerText = `$ : ${fullCommand}`;
-            output.appendChild(echo);
-
             if (cmd === 'y') {
                 waitingForChoice = false;
                 typeText(output, "Welcome to repihw 1.2.2!\nMonitoring initialized.\nType \"help\" for unauthorized commands.", "green", () => {
@@ -98,12 +72,29 @@ input.addEventListener('keydown', async (e) => {
             return;
         }
 
-        // 3. COMANDOS DEL SISTEMA ACTIVO
-        if (isSystemReady) {
-            const echo = document.createElement('div');
-            echo.innerText = `$ : ${fullCommand}`;
-            output.appendChild(echo);
+        if (isSurveyActive) {
+            if (surveyStep === 1) {
+                if (cmd === 'y') {
+                    surveyStep = 2;
+                    typeText(output, `\nCorrect. Metadata matches.\nNext: Are you alone in the room right now? [Y/N]`, "white");
+                } else {
+                    isSurveyActive = false;
+                    typeText(output, `\nYOU ARE LYING TO ME!`, "red glitch", () => {
+                        setTimeout(() => {
+                            typeText(output, `I can see your reflection, ${userCountry} citizen.\nDon't look back.`, "red");
+                        }, 1000);
+                    });
+                }
+            } else if (surveyStep === 2) {
+                typeText(output, `\nI can hear your breathing through the microphone.\n\nCONNECTION PERMANENTLY LOGGED.`, "red", () => {
+                    setTimeout(() => { document.body.innerHTML = ""; }, 3000);
+                });
+                isSurveyActive = false;
+            }
+            return;
+        }
 
+        if (isSystemReady) {
             if (cmd === 'ls') {
                 typeText(output, "HFP.bin   readme.txt   do_not_execute_me.bin   do_not_read_me.txt   logs/   usr/", "white");
             } 
@@ -133,27 +124,16 @@ input.addEventListener('keydown', async (e) => {
                     try {
                         const res = await fetch('https://api.ipify.org?format=json');
                         const data = await res.json();
-                        typeText(output, `\n[TARGET FOUND]\nIP: ${data.ip}\nYour data is now mine.\nI am watching you through the web.`, "red glitch");
+                        typeText(output, `\n[TARGET FOUND]\nIP: ${data.ip}\nYour data is now mine.\nI am watching you.`, "red glitch");
                     } catch {
                         typeText(output, "ERROR: Trace failed. But I'm already in your system.", "red");
                     }
                 });
             }
-            else if (cmd === 'scan') {
-                typeText(output, "Scanning local network...\n[!] Vulnerability found in your router.\n[!] Accessing private folders...", "yellow");
-            }
-            else if (cmd === 'history') {
-                typeText(output, "Commands recorded:\n" + cmdHistory.join('\n'), "white");
-            }
-            else if (cmd === 'sysinfo') {
-                typeText(output, "OS: repihw 1.2.2\nCPU: Brainwaves Detected\nMemory: 0MB (Dying)\nStatus: DEPRESSION_ALV", "white");
-            }
-            else if (cmd === 'clear') {
-                output.innerHTML = "";
-            }
-            else {
-                typeText(output, `repihw: command not found: ${cmd}`, "white");
-            }
+            else if (cmd === 'clear') { output.innerHTML = ""; }
+            else if (cmd === 'sysinfo') { typeText(output, "OS: repihw 1.2.2\nCPU: Brainwaves Detected\nStatus: DEPRESSION_ALV", "white"); }
+            else if (cmd === 'history') { typeText(output, "Commands recorded:\n" + cmdHistory.join('\n'), "white"); }
+            else { typeText(output, `repihw: unknown command: ${cmd}`, "white"); }
         }
     }
 });
