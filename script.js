@@ -99,7 +99,7 @@ input.addEventListener('keydown', async (e) => {
                 print("HFP.bin  readme.txt  do_not_execute_me.bin  do_not_read_me.txt  usr/  logs/", "white");
             } 
             else if (cmd === 'help') {
-                print("Available commands:\nls - List files\ncat [file] - Read file content\nwhoami - Deep network trace\n./[file] - Execute binary\nsysinfo - System status\nclear - Clear terminal", "green");
+                print("Available commands:\nls - List files\ncat [file] - Read file content\nwhoami -  View current user\n./[file] - Execute binary\nsysinfo - System status\nclear - Clear terminal", "green");
             }
             else if (cmd === 'cat do_not_read_me.txt') {
                 print("The relentless march of time is bringing you closer to certain death, which will lead to total oblivion in a couple of generations; no one will remember you in a few years, and all the effort you're making now will have been for nothing.", "red");
