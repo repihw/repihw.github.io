@@ -1,0 +1,51 @@
+/* Para un look pixelado perfecto, necesitamos una fuente específica */
+@font-face {
+    font-family: 'TerminalPixel';
+    src: url('https://db.onlinewebfonts.com/t/2c4b57a53f06484fb12d5d886981442c.woff2') format('woff2');
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff; /* Texto blanco por defecto */
+    font-family: 'TerminalPixel', 'Courier New', monospace;
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 20px;
+    -webkit-font-smoothing: none; /* Look pixelado */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#terminal {
+    max-width: 800px;
+}
+
+#output div {
+    margin-bottom: 5px;
+    white-space: pre-wrap; /* Mantiene saltos de línea y espacios */
+}
+
+/* Colores de la captura */
+.white { color: #ffffff; }
+.yellow { color: #ffff00; }
+.green { color: #00ff00; }
+.red { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
+
+#input-line {
+    display: flex;
+    align-items: center;
+}
+
+.prompt {
+    color: #ffffff;
+    margin-right: 10px;
+}
+
+#command-input {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-family: 'TerminalPixel', monospace;
+    font-size: 1.2rem;
+    outline: none;
+    flex-grow: 1;
+}
