@@ -23,7 +23,7 @@
         const mensajeDiv = document.getElementById('mensaje');
         const input = document.getElementById('codigo');
         const teclado = document.getElementById('teclado');
-        const musica = document.getElementById('musicaFondo'); // Referencia al audio
+        const musica = document.getElementById('musicaFondo');
         let musicaIniciada = false;
 
         const keys = ['1','2','3','4','5','6','7','8','9','backspace','0','enter'];
@@ -31,10 +31,10 @@
         keys.forEach(key => {
             const btn = document.createElement('button');
 
-            // 2. LA LÓGICA DE SONIDO: Se activa al tocar cualquier tecla
             btn.onclick = () => {
+                // Inicia la música al primer toque
                 if (!musicaIniciada) {
-                    musica.play();
+                    musica.play().catch(e => console.log("Error de reproducción"));
                     musicaIniciada = true;
                 }
 
@@ -47,6 +47,7 @@
                 }
             };
 
+            // Configuración visual de las teclas
             if(key === 'backspace') {
                 btn.textContent = '←';
                 btn.className = 'key special backspace';
@@ -72,9 +73,16 @@
 
         function verificarCodigo() {
             const valor = input.value.trim();
+            
             if (valor === '39610534') {
+                // Abre el video de YouTube
                 window.location.href = 'https://m.youtube.com/watch?v=QDia3e12czc';
-            } else {
+            } 
+            else if (valor === '1111') {
+                // Abre tu archivo de contacto
+                window.location.href = 'infocontact.txt';
+            } 
+            else {
                 mostrarMensaje('Código incorrecto', 'error');
             }
         }
